@@ -1,0 +1,54 @@
+ <div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+        <h1 class="text-themecolor">Tabel</h1>
+    </div>
+</div>
+<input type="text" class="form-control" id="txtSearch" style="width: 20%;" />
+<button type="button" value="subnmit" class="btn btn-info btn-lg">SEARCH</button>
+<div class="table-responsive">
+  <table class="table" id="data-outlet">
+    <thead>
+      <tr>
+        <th>Outlet Code</th>
+        <th>Outlet Name</th>
+        <th>Address</th>
+      </tr>
+    </thead>
+  </table>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function() {
+        var dataOutlet = $('#data-outlet').DataTable({
+        "processing" : true,
+	    "serverSide" : true,
+	    "pageLength": 100,
+		"paging":   true,
+        "order": [],
+        "info":     false,
+        "bFilter": true,
+		   "lengthMenu": [[10, 25, 50, -1], [10, 25, 50]],
+		   "ajax" : {
+		    url:"http://192.168.10.4:6969/list-outlet-json-limit",
+            data:function(d){
+                d.start=0;
+                d.end=10;
+                d.search=document.getElementById('txtSearch').value;
+            },
+		    type:"GET"
+		   	},
+		   	"columns": [
+            { "data": "OUTLET_CODE" },
+            { "data": "OUTLET_NAME" },
+            { "data": "ADDRESS_1" }
+        ]
+        });
+
+        $("#txtSearch").change(function(){
+            //alert("ABDE ==>"+document.getElementById('txtSearch').value);
+            $("#data-outlet").DataTable().ajax.reload();
+        });
+    });
+
+
+</script>
